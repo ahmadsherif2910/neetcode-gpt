@@ -3,6 +3,10 @@ from numpy.typing import NDArray
 
 
 class Solution:
+    ACTIVATIONS = {
+        "relu": lambda z: max(0.0, z),
+        "sigmoid": lambda z: 1.0 / (1.0 + np.exp(-z)),
+    }
     def forward(self, x: NDArray[np.float64], w: NDArray[np.float64], b: float, activation: str) -> float:
         # x: 1D input array
         # w: 1D weight array (same length as x)
@@ -13,9 +17,5 @@ class Solution:
         # Sigmoid: σ(z) = 1 / (1 + exp(-z))
         # ReLU: max(0, z)
         # return round(your_answer, 5)
-        z=(x @ w)+b
-        sigmoid = 1.0/(1.0+np.exp(-z))
-        relu = np.maximum(0.0,z)
-
-        if activation == "relu" : return np.round(relu,5)
-        if activation =="sigmoid": return np.round(sigmoid,5) 
+        z = float(x @ w) + b
+        return np.round(self.ACTIVATIONS[activation](z),5) 
